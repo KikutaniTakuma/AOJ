@@ -2,40 +2,40 @@
 using std::cout;
 using std::endl;
 using std::cin;
-
+#include <vector>
 
 int main() {
-	int n, x;
+	int x, y;
 
-	while (true) {
-		cin >> n >> x;
-		if ((n == 0) && (x == 0)) {
-			break;
+	cin >> x >> y;
+
+	std::vector<std::vector<int>> data;
+
+	data.resize(y);
+	for (auto& i : data) {
+		i.resize(x);
+	}
+
+	for (auto& i : data) {
+		for (auto& j : i) {
+			cin >> j;
 		}
+	}
 
-		int count = 0;
-
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				if (i == j) {
-					break;
-				}
-				for (int k = 1; k <= n; k++) {
-					if ((i == k) || (j == k)) {
-						break;
-					}
-
-					if ((i + j + k) == x) {
-						count++;
-					}
-
-				}
-			}
+	for (auto& i : data) {
+		int total = 0;
+		for (auto& j : i) {
+			total += j;
 		}
+		i.push_back(total);
+	}
 
-		cout << count << endl;
-
-	};
+	data.push_back(std::vector<int>());
+	auto& last = data.back();
+	size_t count = 0;
+	for (auto & i : data) {
+		
+	}
 
 	return 0;
 }
