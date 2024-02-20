@@ -7,7 +7,7 @@ using std::cin;
 int main() {
 	int x, y;
 
-	cin >> x >> y;
+	cin >> y >> x;
 
 	std::vector<std::vector<int>> data;
 
@@ -32,9 +32,31 @@ int main() {
 
 	data.push_back(std::vector<int>());
 	auto& last = data.back();
-	size_t count = 0;
-	for (auto & i : data) {
-		
+	for (size_t count = 0; count < data.front().size() - 1; count++) {
+		int sum = 0;
+		for (size_t i = 0; i < data.size() - 1;i++) {
+			sum += data[i][count];
+		}
+
+		last.push_back(sum);
+	}
+
+	int sum = 0;
+	for (auto& i : last) {
+		sum += i;
+	}
+
+	last.push_back(sum);
+
+	for (auto& i : data) {
+		for (size_t j = 0; j < i.size();j++) {
+			if (j == i.size()-1) {
+				cout << i[j] << "\n";
+			}
+			else {
+				cout << i[j] << " ";
+			}
+		}
 	}
 
 	return 0;
