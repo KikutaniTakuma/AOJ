@@ -8,20 +8,26 @@ using std::cin;
 int main() {
 	std::vector<std::string> data;
 	std::string input;
+	input.clear();
 
-
-	do {
+	while (true) {
 		cin >> input;
+
+		if(atoi(input.c_str()) == 0) {
+			break;
+		}
 
 		data.push_back(input);
 
-	} while(atoi(data.back().c_str()) == 0);
+		input.clear();
+
+	}
 
 	std::vector<int> result;
 	for (auto& i : data) {
 		int sum = 0;
 		for (char& c : i) {
-			sum += atoi(&c);
+			sum += c - '0';
 		}
 
 		result.push_back(sum);
