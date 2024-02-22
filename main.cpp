@@ -10,7 +10,21 @@ int main() {
 
 	cin >> s >> p;
 
-	cout << (p.find(p) == std::string::npos) ? "Yes" : "No";
+	std::string tmpS = s;
+
+	do {
+		if (s.find(p) != std::string::npos) {
+			cout << "Yes"<< endl;
+			return 0;
+		}
+		else {
+			char firstCBuf = s.front();
+			s.erase(s.begin());
+			s += firstCBuf;
+		}
+	} while(tmpS != s);
+
+	cout << "No" << endl;
 
 	return 0;
 }
