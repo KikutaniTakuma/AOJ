@@ -7,51 +7,48 @@ using std::cin;
 
 int main() {
 	std::string str;
-	std::string function;
 
 	int a;
 	int b;
 
-	std::string replaceStr;
-	std::string input;
-	std::string procNum;
+	int procNum;
 
 	cin >> str;
-
-	while (cin >> input >> procNum);
-	{
-		str = input;
+	cin >> procNum;
 
 
-		for (int i = 0; i < std::atoi(procNum.c_str());i++) {
-			if (input == "replace") {
-				cin >> a >> b >> replaceStr;
-				auto itr = str.begin();
-				str.replace(itr + a, itr + b, replaceStr);
-			}
-			else if (input == "reverse") {
-				cin >> a >> b;
+	for (int i = 0; i < procNum; i++) {
+		std::string function;
+		cin >> function;
 
-				auto itr = str.begin();
-				std::string reverseTmp;
+		if (function == "replace") {
+			std::string replaceStr;
+			cin >> a >> b >> replaceStr;
+			auto itr = str.begin();
+			str.replace(itr + a, itr + b + 1, replaceStr);
+		}
+		else if (function == "reverse") {
+			cin >> a >> b;
 
-				std::copy(itr + a, itr + b, reverseTmp.begin());
+			auto itr = str.begin();
+			std::string reverseTmp;
+			reverseTmp.resize(b + 1 - a);
 
-				std::reverse(reverseTmp.begin(), reverseTmp.end());
+			std::copy(itr + a, itr + b + 1, reverseTmp.begin());
 
-				str.replace(itr + a, itr + b, reverseTmp);
-			}
-			else if (input == "print") {
-				cin >> a >> b;
+			std::reverse(reverseTmp.begin(), reverseTmp.end());
 
-				auto itr = str.begin();
+			str.replace(itr + a, itr + b + 1, reverseTmp);
+		}
+		else if (function == "print") {
+			cin >> a >> b;
 
-				std::string tmp;
+			auto itr = str.begin();
+			std::string tmp;
+			tmp.resize(b + 1 - a);
+			std::copy(itr + a, itr + b + 1, tmp.begin());
 
-				std::copy(itr + a, itr + b, tmp.begin());
-
-				cout << tmp << endl;
-			}
+			cout << tmp << endl;
 		}
 	}
 
