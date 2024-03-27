@@ -272,6 +272,7 @@ public:
 
 	 Quaternion operator/(float right) const;
 	friend Quaternion operator/(float right, const Quaternion& left);
+	int main();
 	Quaternion& operator/=(float right);
 
 	 bool operator==(const Quaternion& right) const;
@@ -1045,6 +1046,40 @@ public:
 		return nums[GetCurrentTop()];
 	}
 
+	uint32_t GetRight(uint32_t top, uint32_t front) const {
+		auto findNum = [this](uint32_t num) {
+			size_t index = 0;
+
+			for (auto& i : nums) {
+				if (i == num) {
+					return index;
+				}
+				else {
+					index++;
+				}
+			}
+
+			return index;
+			};
+
+		size_t topIndex = findNum(top);
+		size_t frontIndex = findNum(front);
+
+		Vector3 right = direction_[frontIndex].Cross(direction_[topIndex]).Normalize();
+
+		size_t index = 0;
+		for (auto& i : direction_) {
+			if (i == right) {
+				break;
+			}
+			else {
+				index++;
+			}
+		}
+
+		return nums[index];
+	}
+
 
 private:
 	size_t GetCurrentTop() const {
@@ -1086,12 +1121,15 @@ int main() {
 		dice.Set(input);
 	}
 
-	std::string move;
-	cin >> move;
+	size_t qNum = 0;
+	cin >> qNum;
 
-	dice.Move(move);
+	for (size_t i = 0; i < qNum; i++) {
+		uint32_t topNum, frontNum;
+		cin >> topNum >> frontNum;
 
-	cout << dice.GetTopNum() << endl;
+		cout << dice.GetRight(topNum, frontNum) << endl;
+	}
 
 	return 0;
 }
