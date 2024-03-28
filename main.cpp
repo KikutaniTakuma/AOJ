@@ -998,18 +998,23 @@ Quaternion Quaternion::Slerp(Quaternion start, const Quaternion& end, float t) {
 #pragma endregion
 
 class Dice {
+private:
+	struct Data{
+		uint32_t num;
+		Vector3 direction;
+	};
+
 public:
 	Dice():
-		nums(),
-		index(0llu),
-		direction_()
+		data(),
+		index(0llu)
 	{
-		direction_[0] = Vector3::kYIdentity;
-		direction_[1] = -Vector3::kZIdentity;
-		direction_[2] = Vector3::kXIdentity;
-		direction_[3] = -Vector3::kXIdentity;
-		direction_[4] = Vector3::kZIdentity;
-		direction_[5] = -Vector3::kYIdentity;
+		data[0].direction = Vector3::kYIdentity;
+		data[1].direction = -Vector3::kZIdentity;
+		data[2].direction = Vector3::kXIdentity;
+		data[3].direction = -Vector3::kXIdentity;
+		data[4].direction = Vector3::kZIdentity;
+		data[5].direction = -Vector3::kYIdentity;
 	}
 	Dice(Dice&) = default;
 	Dice(Dice&&) = default;
@@ -1036,22 +1041,22 @@ public:
 				quaternion = Quaternion::MakeRotateZAxis(float(-M_PI) * 0.5f);
 			}
 
-			for (auto& i : direction_) {
-				i *= quaternion;
+			for (auto& i : data) {
+				i.direction *= quaternion;
 			}
 		}
 	}
 
 	uint32_t GetTopNum() const {
-		return nums[GetCurrentTop()];
+		return data[GetCurrentTop()].num;
 	}
 
 	uint32_t GetRight(uint32_t top, uint32_t front) const {
 		auto findNum = [this](uint32_t num) {
 			size_t index = 0;
 
-			for (auto& i : nums) {
-				if (i == num) {
+			for (auto& i : data) {
+				if (i.num == num) {
 					return index;
 				}
 				else {
@@ -1065,11 +1070,11 @@ public:
 		size_t topIndex = findNum(top);
 		size_t frontIndex = findNum(front);
 
-		Vector3 right = direction_[frontIndex].Cross(direction_[topIndex]).Normalize();
+		Vector3 right = data[frontIndex].direction.Cross(data[topIndex].direction).Normalize();
 
 		size_t index = 0;
-		for (auto& i : direction_) {
-			if (i == right) {
+		for (auto& i : data) {
+			if (i.direction == right) {
 				break;
 			}
 			else {
@@ -1077,7 +1082,34 @@ public:
 			}
 		}
 
-		return nums[index];
+		return data[index].num;
+	}
+
+	bool IsSame(const Dice& other) {
+		std::array<uint32_t, 3> sum = { data[0].num + data[5].num, data[1].num + data[4].num, data[2].num + data[3].num };
+		std::array<uint32_t, 3> othersum = { other.data[0].num + other.data[5].num, other.data[1].num + other.data[4].num, other.data[2].num + other.data[3].num };
+
+		uint32_t count = 0;
+		for (auto& i : sum) {
+			for (auto& j : othersum) {
+				if (i == j) {
+					count++;
+					break;
+				}
+			}
+		}
+
+		bool isSameSurface = (count == 3);
+		if (not isSameSurface) {
+			return false;
+		}
+
+		const uint32_t otherTop = other.data.front().num;
+		const uint32_t otherRight = other.data[other.GetCurrentRight()].num;
+		const uint32_t otherFront = other.data[other.GetCurrentFront()].num;
+
+
+
 	}
 
 
@@ -1087,8 +1119,40 @@ private:
 
 		Vector3 topDirection = Vector3::kYIdentity;
 
-		for (auto& i : direction_) {
-			if (topDirection == i) {
+		for (auto& i : data) {
+			if (topDirection == i.direction) {
+				break;
+			}
+			else {
+				result++;
+			}
+		}
+
+		return result;
+	}
+	size_t GetCurrentRight() const {
+		size_t result = 0;
+
+		Vector3 rightDirection = Vector3::kXIdentity;
+
+		for (auto& i : data) {
+			if (rightDirection == i.direction) {
+				break;
+			}
+			else {
+				result++;
+			}
+		}
+
+		return result;
+	}
+	size_t GetCurrentFront() const {
+		size_t result = 0;
+
+		Vector3 frontDirection = -Vector3::kZIdentity;
+
+		for (auto& i : data) {
+			if (frontDirection == i.direction) {
 				break;
 			}
 			else {
@@ -1101,35 +1165,32 @@ private:
 
 public:
 	void Set(uint32_t num) {
-		nums[index] = num;
+		data[index].num = num;
 		index++;
 	}
 
 private:
-	std::array<uint32_t, 6> nums;
-	std::array<Vector3, 6> direction_;
+	std::array<Data, 6> data;
 	size_t index;
 };
 
 
 int main() {
 	Dice dice;
+	Dice dice2;
 
 	for (size_t i = 0; i < 6; i++) {
 		uint32_t input;
 		cin >> input;
 		dice.Set(input);
 	}
-
-	size_t qNum = 0;
-	cin >> qNum;
-
-	for (size_t i = 0; i < qNum; i++) {
-		uint32_t topNum, frontNum;
-		cin >> topNum >> frontNum;
-
-		cout << dice.GetRight(topNum, frontNum) << endl;
+	for (size_t i = 0; i < 6; i++) {
+		uint32_t input;
+		cin >> input;
+		dice2.Set(input);
 	}
+
+	cout << ((dice.IsSame(dice2)) ? "yes" : " no");
 
 	return 0;
 }
