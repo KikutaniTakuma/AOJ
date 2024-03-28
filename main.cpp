@@ -898,7 +898,7 @@ int main() {
 		}
 	}
 
-	bool isAllSame = false;
+	bool isSame = false;
 
 	while (1 < data.size()) {
 		auto back = --data.end();
@@ -909,7 +909,7 @@ int main() {
 			}
 
 			if (i->IsSame(*back)) {
-				isAllSame = true;
+				isSame = true;
 				break;
 			}
 		}
@@ -917,7 +917,7 @@ int main() {
 		data.erase(back);
 	}
 
-	cout << (not isAllSame ? "Yes" : "No") << endl;
+	cout << (not isSame ? "Yes" : "No") << endl;
 
 	return 0;
 }
