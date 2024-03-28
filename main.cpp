@@ -4,21 +4,12 @@ using std::endl;
 using std::cin;
 #include <array>
 #include <string>
-
 #include <array>
-
 #define _USE_MATH_DEFINES
 #include <math.h>
-
 #pragma region Hoge
-
-/// <summary>
-/// 三次元配列
-/// </summary>
+#pragma region Vector3
 class Vector3 final {
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
 public:
 	constexpr Vector3() noexcept;
 	Vector3(float x, float y, float z) noexcept;
@@ -26,18 +17,9 @@ public:
 	constexpr Vector3(Vector3&&) noexcept = default;
 public:
 	~Vector3() = default;
-
-	/// <summary>
-	/// 演算子のオーバーロード
-	/// </summary>
 public:
-	// 単項演算子
-
 	 Vector3 operator+() const noexcept;
 	 Vector3 operator-() const noexcept;
-
-
-	// 二項演算子
 
 	Vector3& operator=(const Vector3&) = default;
 	Vector3& operator=(Vector3&&) = default;
@@ -53,70 +35,30 @@ public:
 	 Vector3 operator*(const class Quaternion& right) const;
 	Vector3& operator*=(const class Quaternion& right);
 
-
-	// 等比演算子
-
 	 bool operator==(const Vector3& right) const noexcept;
 	 bool operator!=(const Vector3& right) const noexcept;
 
-	// 
 	 float& operator[](size_t index);
 	 const float& operator[](size_t index) const;
-
-
-	/// <summary>
-	/// メンバ関数
-	/// </summary>
 public:
 	 float Dot(const Vector3& right) const noexcept;
 	 Vector3 Cross(const Vector3& right) const noexcept;
 	 float Length() const noexcept;
 	 Vector3 Normalize() const noexcept;
-
-	/// <summary>
-	/// 静的定数
-	/// </summary>
 public:
-	/// <summary>
-	/// x = 1.0f, y = 1.0f, z = 1.0f
-	/// </summary>
 	static const Vector3 kIdentity;
-	/// <summary>
-	/// x = 0.0f, y = 0.0f, z = 0.0f
-	/// </summary>
 	static const Vector3 kZero;
-	/// <summary>
-	/// x = 1.0f, y = 0.0f, z = 0.0f
-	/// </summary>
 	static const Vector3 kXIdentity;
-	/// <summary>
-	/// x = 0.0f, y = 1.0f, z = 0.0f
-	/// </summary>
 	static const Vector3 kYIdentity;
-	/// <summary>
-	/// x = 0.0f, y = 0.0f, z = 1.0f
-	/// </summary>
 	static const Vector3 kZIdentity;
-
-	/// <summary>
-	/// メンバ変数
-	/// </summary>
 public:
 	float x;
 	float y;
 	float z;
 };
-
-
-
-
-/// <summary>
-/// 4次元配列
-/// </summary>
+#pragma endregion
+#pragma region Vector4
 class Vector4 final {
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
 public:
 	constexpr Vector4() noexcept;
 	constexpr Vector4(const Vector4&) = default;
@@ -126,10 +68,6 @@ public:
 	Vector4(const std::array<float, 4>& right) noexcept;
 public:
 	~Vector4() = default;
-
-	/// <summary>
-	/// 演算子のオーバーロード
-	/// </summary>
 public:
 	 Vector4 operator+() const noexcept;
 	 Vector4 operator-() const noexcept;
@@ -160,51 +98,17 @@ public:
 		return m[index];
 	}
 
-	/// <summary>
-	/// メンバ関数
-	/// </summary>
 public:
 	 float Length() const noexcept;
-
 	 Vector4 Normalize() const noexcept;
-
 	 float Dot(const Vector4& right) const noexcept;
-
-	 class Vector3 GetVector3() const noexcept;
-
-	/// <summary>
-	/// 静的定数
-	/// </summary>
 public:
-	/// <summary>
-	/// x = 1.0f, y = 1.0f, z = 1.0f, w = 1.0f
-	/// </summary>
 	static const Vector4 kIdentity;
-	/// <summary>
-	/// x = 0.0f, y = 0.0f, z = 0.0f, w = 0.0f
-	/// </summary>
 	static const Vector4 kZero;
-	/// <summary>
-	/// x = 1.0f, y = 0.0f, z = 0.0f, w = 0.0f
-	/// </summary>
 	static const Vector4 kXIdentity;
-	/// <summary>
-	/// x = 0.0f, y = 1.0f, z = 0.0f, w = 0.0f
-	/// </summary>
 	static const Vector4 kYIdentity;
-	/// <summary>
-	/// x = 0.0f, y = 0.0f, z = 1.0f, w = 0.0f
-	/// </summary>
 	static const Vector4 kZIdentity;
-	/// <summary>
-	/// x = 0.0f, y = 0.0f, z = 0.0f, w = 1.0f
-	/// </summary>
 	static const Vector4 kWIdentity;
-
-
-	/// <summary>
-	/// メンバ変数
-	/// </summary>
 public:
 	union {
 		std::array<float, 4> m;
@@ -223,14 +127,9 @@ public:
 	};
 
 };
-
-/// <summary>
-/// クォータニオンクラス
-/// </summary>
+#pragma endregion
+#pragma region Quaternion
 class Quaternion final {
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
 public:
 	constexpr Quaternion();
 	constexpr Quaternion(const Quaternion&) = default;
@@ -240,17 +139,9 @@ public:
 	Quaternion(const std::array<float, 4>& right);
 	Quaternion(float x, float y, float z, float w);
 	~Quaternion() = default;
-
-	/// <summary>
-	/// 単項演算子
-	/// </summary>
 public:
 	 Quaternion operator+() const noexcept;
 	 Quaternion operator-() const noexcept;
-
-	/// <summary>
-	/// 二項演算子のオーバーロード
-	/// </summary>
 public:
 	Quaternion& operator=(const Quaternion&) = default;
 	Quaternion& operator=(Quaternion&&)noexcept = default;
@@ -279,110 +170,24 @@ public:
 	 bool operator!=(const Quaternion& right) const;
 
 public:
-	/// <summary>
-	/// 共役
-	/// </summary>
-	/// <returns>このクォータニオンの虚部を反転させたもの</returns>
 	 Quaternion Conjugate() const;
-
-	/// <summary>
-	/// クォータニオンを4次元ベクトルとしての内積
-	/// </summary>
-	/// <param name="other">他のクォータニオン</param>
-	/// <returns>内積結果</returns>
 	 float Dot(const Quaternion& other) const;
-
-	/// <summary>
-	/// 長さ取得
-	/// </summary>
-	/// <returns>ノルム</returns>
 	 float Length() const;
-
-	/// <summary>
-	/// 長さ1のクォータニオンを返す
-	/// </summary>
-	/// <returns>単位クォータニオン</returns>
 	 Quaternion Normalize() const;
-
-	/// <summary>
-	/// 逆クォータニオンを返す
-	/// </summary>
-	/// <returns>逆クォータニオン</returns>
 	 Quaternion Inverce() const;
-
 	 Vector3 GetDirectionX() const;
-
 	 Vector3 GetDirectionY() const;
-
 	 Vector3 GetDirectionZ() const;
-
-
-
-	/// <summary>
-	/// 静的メンバ関数
-	/// </summary>
 public:
-	/// <summary>
-	/// クォータニオン版のDirectionToDirection
-	/// </summary>
-	/// <param name="from">始点</param>
-	/// <param name="to">終点</param>
-	/// <returns>クォータニオン</returns>
 	static  Quaternion DirectionToDirection(const Vector3& from, const Vector3& to);
-
-	/// <summary>
-	/// 任意軸回転
-	/// </summary>
-	/// <param name="axis">任意軸の方向ベクトル(単位ベクトル)</param>
-	/// <param name="angle">任意軸での回転量</param>
-	/// <returns>任意軸回転を適用したクォータニオン</returns>
 	static  Quaternion MakeRotateAxisAngle(const Vector3& axis, float angle);
-	/// <summary>
-	/// x軸回転クォータニオン
-	/// </summary>
-	/// <param name="angle">オイラー角</param>
-	/// <returns>x軸回転を適用したクォータニオン</returns>
 	static  Quaternion MakeRotateXAxis(float angle);
-	// <summary>
-	/// y軸回転クォータニオン
-	/// </summary>
-	/// <param name="angle">オイラー角</param>
-	/// <returns>y軸回転を適用したクォータニオン</returns>
 	static  Quaternion MakeRotateYAxis(float angle);
-	// <summary>
-	/// z軸回転クォータニオン
-	/// </summary>
-	/// <param name="angle">オイラー角</param>
-	/// <returns>z軸回転を適用したクォータニオン</returns>
 	static  Quaternion MakeRotateZAxis(float angle);
-
-	/// <summary>
-	/// クォータニオン線形補完関数(近いものの方向に回転する)
-	/// </summary>
-	/// <param name="start">スタート時の回転</param>
-	/// <param name="end">終わりの回転</param>
-	/// <param name="t">0.0f～1.0f</param>
-	/// <returns>補完されたクォータニオン</returns>
 	static  Quaternion Slerp(Quaternion start, const Quaternion& end, float t);
-
-
-	/// <summary>
-	/// 静的メンバ定数
-	/// </summary>
 public:
-	/// <summary>
-	/// x = 0.0f, y = 0.0f, z = 0.0f w = 1.0f
-	/// </summary>
 	static const Quaternion kIdentity;
-
-	/// <summary>
-	/// x = 0.0f, y = 0.0f, z = 0.0f w = 0.0f
-	/// </summary>
 	static const Quaternion kZero;
-
-	/// <summary>
-	/// メンバ変数
-	/// </summary>
 public:
 	union
 	{
@@ -401,8 +206,8 @@ public:
 		}quaternion;
 	};
 };
+#pragma endregion
 #pragma region Vector3
-
 constexpr Vector3::Vector3() noexcept :
 	x(0.0f),
 	y(0.0f),
@@ -525,7 +330,6 @@ Vector3 Vector3::Normalize() const noexcept {
 }
 
 #pragma endregion
-
 #pragma region Vector4
 const Vector4 Vector4::kIdentity = { 1.0f,1.0f,1.0f,1.0f };
 const Vector4 Vector4::kZero = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -654,43 +458,10 @@ Vector4 Vector4::Normalize() const noexcept {
 float Vector4::Dot(const Vector4& right) const noexcept {
 	return vec.x * right.vec.x + vec.y * right.vec.y + vec.z * right.vec.z + vec.w * right.vec.w;
 }
-
-Vector3 Vector4::GetVector3() const noexcept {
-	return Vector3(vec.x, vec.y, vec.z);
-}
-
-Vector4 UintToVector4(uint32_t color) {
-	static constexpr float normal = 1.0f / static_cast<float>(std::numeric_limits<uint8_t>::max());
-	Vector4 result;
-
-	result.color = {
-		static_cast<float>((color & 0xff000000) >> 24) * normal,
-		static_cast<float>((color & 0x00ff0000) >> 16) * normal,
-		static_cast<float>((color & 0x0000ff00) >> 8) * normal,
-		static_cast<float>(color & 0x000000ff) * normal
-	};
-	return result;
-}
-
 #pragma endregion
-
-
 #pragma region Quaternion
-/// ========================================================================
-/// 静的メンバ定数
-/// ========================================================================
-#pragma region Constant Number
 const Quaternion Quaternion::kIdentity = { 0.0f, 0.0f, 0.0f, 1.0f };
 const Quaternion Quaternion::kZero = { 0.0f, 0.0f, 0.0f, 0.0f };
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// コンストラクタ
-/// ========================================================================
-#pragma region Constructor
 constexpr Quaternion::Quaternion() :
 	m{ 0.0f }
 {}
@@ -713,44 +484,17 @@ Quaternion::Quaternion(const std::array<float, 4>& right) {
 Quaternion::Quaternion(float x, float y, float z, float w) {
 	m = { x,y,z,w };
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// コピー演算子
-/// ========================================================================
-#pragma region Copy operator
 Quaternion& Quaternion::operator=(const Vector4& right) {
 	m = right.m;
 
 	return *this;
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// 単項演算子
-/// ========================================================================
-#pragma region Unary operator
 Quaternion Quaternion::operator+() const noexcept {
 	return *this;
 }
 Quaternion Quaternion::operator-() const noexcept {
 	return Quaternion{ -m[0],-m[1],-m[2],-m[3] };
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// 乗算演算子
-/// ========================================================================
-#pragma region Multiplication operator
 Quaternion Quaternion::operator*(const Quaternion& right) const {
 	Quaternion result;
 
@@ -766,15 +510,6 @@ Quaternion& Quaternion::operator*=(const Quaternion& right) {
 
 	return *this;
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// 加算演算子
-/// ========================================================================
-#pragma region Add operator
 Quaternion Quaternion::operator+(const Quaternion& right) const {
 	Quaternion result;
 
@@ -787,15 +522,6 @@ Quaternion& Quaternion::operator+=(const Quaternion& right) {
 
 	return *this;
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// 減算演算子
-/// ========================================================================
-#pragma region Sub operator
 Quaternion Quaternion::operator-(const Quaternion& right) const {
 	Quaternion result;
 
@@ -808,15 +534,6 @@ Quaternion& Quaternion::operator-=(const Quaternion& right) {
 
 	return *this;
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// スカラー倍演算子
-/// ========================================================================
-#pragma region Scalar operator
 Quaternion Quaternion::operator*(float right) const {
 	Quaternion result{ *this };
 
@@ -844,31 +561,12 @@ Quaternion& Quaternion::operator/=(float right) {
 
 	return *this;
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// 等値演算子
-/// ========================================================================
-#pragma region Equal operator
 bool Quaternion::operator==(const Quaternion& right) const {
 	return m == right.m;
 }
 bool Quaternion::operator!=(const Quaternion& right) const {
 	return m != right.m;
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-
-/// ========================================================================
-/// メンバ関数
-/// ========================================================================
-#pragma region Member function
 Quaternion Quaternion::Conjugate() const {
 	return Quaternion{ -vector.vector3, vector.w };
 }
@@ -918,15 +616,6 @@ Vector3 Quaternion::GetDirectionZ() const
 		std::pow(quaternion.w, 2.0f) - std::pow(quaternion.x, 2.0f) - std::pow(quaternion.y, 2.0f) + std::pow(quaternion.z, 2.0f)
 	);
 }
-#pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
-
-/// ========================================================================
-/// 静的メンバ関数
-/// ========================================================================
-#pragma region Static member function
 Quaternion Quaternion::DirectionToDirection(const Vector3& from, const Vector3& to) {
 	Quaternion result;
 	Vector3 normal;
@@ -992,9 +681,6 @@ Quaternion Quaternion::Slerp(Quaternion start, const Quaternion& end, float t) {
 	return result;
 }
 #pragma endregion
-/// ========================================================================
-/// ========================================================================
-/// ========================================================================
 #pragma endregion
 
 class Dice {
@@ -1039,6 +725,12 @@ public:
 			}
 			else if (i == 'E') {
 				quaternion = Quaternion::MakeRotateZAxis(float(-M_PI) * 0.5f);
+			}
+			else if (i == 'R') {
+				quaternion = Quaternion::MakeRotateYAxis(float(-M_PI) * 0.5f);
+			}
+			else if (i == 'L') {
+				quaternion = Quaternion::MakeRotateYAxis(float(-M_PI) * 0.5f);
 			}
 
 			for (auto& i : data) {
@@ -1086,41 +778,58 @@ public:
 	}
 
 	bool IsSame(const Dice& other) {
-		std::array<uint32_t, 3> sum = { data[0].num + data[5].num, data[1].num + data[4].num, data[2].num + data[3].num };
-		std::array<uint32_t, 3> othersum = { other.data[0].num + other.data[5].num, other.data[1].num + other.data[4].num, other.data[2].num + other.data[3].num };
-
-		uint32_t count = 0;
-		for (auto& i : sum) {
-			for (auto& j : othersum) {
-				if (i == j) {
-					count++;
-					break;
+		const auto&& otherArr = other.GetArray();
+		auto same = [this, &otherArr]()->bool {
+			return this->GetArray() == otherArr;
+			};
+		auto yRotateSame = [this, &same]()->bool {
+			for (int i = 0; i < 4; i++) {
+				if (same()) {
+					return true;
 				}
+				else {
+					Move("R");
+				}
+			}
+			return false;
+		};
+
+		// x軸方向に回転させる
+		for (int i = 0; i < 4; i++) {
+			if (same()) {
+				return true;
+			}
+			else {
+				// y軸で一周
+				if (yRotateSame()) {
+					return true;
+				}
+				Move("N");
 			}
 		}
 
-		bool isSameSurface = (count == 3);
-		if (not isSameSurface) {
-			return false;
+		// 以下x軸じゃ足りない分
+		Move("W");
+		// y軸で一周
+		if (yRotateSame()) {
+			return true;
+		}
+		Move("EE");
+		// y軸で一周
+		if (yRotateSame()) {
+			return true;
 		}
 
-		const uint32_t otherTop = other.data.front().num;
-		const uint32_t otherRight = other.data[other.GetCurrentRight()].num;
-		const uint32_t otherFront = other.data[other.GetCurrentFront()].num;
-
-
-
+		return false;
 	}
 
 
 private:
-	size_t GetCurrentTop() const {
+	size_t GetNumberFromDirection(const Vector3& direction)const {
 		size_t result = 0;
 
-		Vector3 topDirection = Vector3::kYIdentity;
-
 		for (auto& i : data) {
-			if (topDirection == i.direction) {
+			if (direction == i.direction) {
 				break;
 			}
 			else {
@@ -1130,35 +839,35 @@ private:
 
 		return result;
 	}
-	size_t GetCurrentRight() const {
-		size_t result = 0;
 
-		Vector3 rightDirection = Vector3::kXIdentity;
-
-		for (auto& i : data) {
-			if (rightDirection == i.direction) {
-				break;
-			}
-			else {
-				result++;
-			}
-		}
-
-		return result;
+	size_t GetCurrentTop()    const {
+		return GetNumberFromDirection(Vector3::kYIdentity);
 	}
-	size_t GetCurrentFront() const {
-		size_t result = 0;
+	size_t GetCurrentBottom() const {
+		return GetNumberFromDirection(-Vector3::kYIdentity);
+	}
+	size_t GetCurrentRight()  const {
+		return GetNumberFromDirection(Vector3::kXIdentity);
+	}
+	size_t GetCurrentLeft()   const {
+		return GetNumberFromDirection(-Vector3::kXIdentity);
+	}
+	size_t GetCurrentBack()   const {
+		return GetNumberFromDirection(Vector3::kZIdentity);
+	}
+	size_t GetCurrentFront()  const {
+		return GetNumberFromDirection(-Vector3::kZIdentity);
+	}
 
-		Vector3 frontDirection = -Vector3::kZIdentity;
-
-		for (auto& i : data) {
-			if (frontDirection == i.direction) {
-				break;
-			}
-			else {
-				result++;
-			}
-		}
+	std::array<uint32_t, 6> GetArray() const {
+		std::array<uint32_t, 6> result = {
+			data[GetCurrentTop()   ].num,
+			data[GetCurrentBottom()].num,
+			data[GetCurrentRight() ].num,
+			data[GetCurrentLeft()  ].num,
+			data[GetCurrentBack()  ].num,
+			data[GetCurrentFront() ].num
+		};
 
 		return result;
 	}
@@ -1190,7 +899,7 @@ int main() {
 		dice2.Set(input);
 	}
 
-	cout << ((dice.IsSame(dice2)) ? "yes" : " no");
+	cout << ((dice.IsSame(dice2)) ? "Yes" : "No") << endl;
 
 	return 0;
 }
