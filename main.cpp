@@ -4,7 +4,7 @@ using std::endl;
 using std::cin;
 #include <array>
 #include <string>
-#include <array>
+#include <vector>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #pragma region Hoge
@@ -163,7 +163,6 @@ public:
 
 	 Quaternion operator/(float right) const;
 	friend Quaternion operator/(float right, const Quaternion& left);
-	int main();
 	Quaternion& operator/=(float right);
 
 	 bool operator==(const Quaternion& right) const;
@@ -685,8 +684,8 @@ Quaternion Quaternion::Slerp(Quaternion start, const Quaternion& end, float t) {
 
 class Dice {
 private:
-	struct Data{
-		uint32_t num;
+	struct Data {
+		uint32_t num = 0;
 		Vector3 direction;
 	};
 
@@ -792,7 +791,7 @@ public:
 				}
 			}
 			return false;
-		};
+			};
 
 		// xŽ²•ûŒü‚É‰ñ“]‚³‚¹‚é
 		for (int i = 0; i < 4; i++) {
@@ -819,6 +818,7 @@ public:
 		if (yRotateSame()) {
 			return true;
 		}
+		Move("W");
 
 		return false;
 	}
@@ -885,21 +885,39 @@ private:
 
 
 int main() {
-	Dice dice;
-	Dice dice2;
+	std::vector<Dice> data;
+	size_t size = 0;
+	cin >> size;
+	data.resize(size);
 
-	for (size_t i = 0; i < 6; i++) {
-		uint32_t input;
-		cin >> input;
-		dice.Set(input);
-	}
-	for (size_t i = 0; i < 6; i++) {
-		uint32_t input;
-		cin >> input;
-		dice2.Set(input);
+	for (auto& dice : data) {
+		for (size_t i = 0; i < 6; i++) {
+			uint32_t input;
+			cin >> input;
+			dice.Set(input);
+		}
 	}
 
-	cout << ((dice.IsSame(dice2)) ? "Yes" : "No") << endl;
+	bool isAllSame = false;
+
+	while (1 < data.size()) {
+		auto back = --data.end();
+
+		for (auto i = data.begin(); i != data.end(); i++) {
+			if (i == back) {
+				continue;
+			}
+
+			if (i->IsSame(*back)) {
+				isAllSame = true;
+				break;
+			}
+		}
+
+		data.erase(back);
+	}
+
+	cout << (not isAllSame ? "Yes" : "No") << endl;
 
 	return 0;
 }
