@@ -4,7 +4,6 @@ using std::endl;
 using std::cin;
 #include <array>
 #include <string>
-#include <array>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #pragma region Hoge
