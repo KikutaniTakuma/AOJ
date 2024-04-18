@@ -763,15 +763,7 @@ public:
 
 		Vector3 right = data[frontIndex].direction.Cross(data[topIndex].direction).Normalize();
 
-		size_t index = 0;
-		for (auto& i : data) {
-			if (i.direction == right) {
-				break;
-			}
-			else {
-				index++;
-			}
-		}
+		size_t index = GetNumberFromDirection(right);
 
 		return data[index].num;
 	}
