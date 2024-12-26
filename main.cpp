@@ -1,109 +1,78 @@
 #include <iostream>
-#include <utility>
+#include <string>
 #include <vector>
-#include <algorithm>
 
-struct IslandData {
-    int aroundSeaLength = 0;
-    int area = 0;
-
-    bool operator==(const IslandData& right) const {
-        return area == right.area and aroundSeaLength == right.aroundSeaLength;
-    }
-
-    bool operator!=(const IslandData& right) const {
-        return not (*this == right);
-    }
-};
-
-enum Pre {
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT,
-    NONE
-};
-
-void ClaclIslandData(IslandData& output, std::vector<std::vector<bool>>& data, const std::vector<std::vector<bool>>& constdata, int x, int y, Pre pre) {
-    data[y][x] = false;
-    output.aroundSeaLength += (pre == NONE) ? 4 : 3;
-    output.area += 1;
-
-    // è„
-    if (y + 1 < data.size() and pre != UP and constdata[y + 1][x]) {
-        output.aroundSeaLength -= 1;
-        if (data[y + 1][x]) {
-            ClaclIslandData(output, data, constdata, x, y + 1, DOWN);
+void CalcGoal(std::vector<std::string>& mapdata, int k) {
+    for (int count = 0, y = 0; auto & i : mapdata) {
+        // 1, 2, 5, 6, 9, 10, 13, 14...
+        if (((y % 2 == 0) and (y % 4 != 0)) or ((y + 1 % 2 == 0) and (y + 1 % 4 != 0))) {
+            for (auto j = i.rbegin(); j != i.rend(); j++) {
+                if (*j == '.') {
+                    count++;
+                    if (count == k) {
+                        *j = 'G';
+                        return;
+                    }
+                }
+            }
         }
-    }
-    // â∫
-    if (0<=y-1 and pre != DOWN and constdata[y - 1][x]) {
-        output.aroundSeaLength -= 1;
-        if (data[y - 1][x]) {
-            ClaclIslandData(output, data, constdata, x, y - 1, UP);
-        }
-    }
-    // âE
-    if (x + 1 < data.front().size() and pre != RIGHT and constdata[y][x + 1]) {
-        output.aroundSeaLength -= 1;
-        if (data[y][x + 1]) {
-            ClaclIslandData(output, data, constdata, x + 1, y, LEFT);
-        }
-    }
-    // ç∂
-    if (0 <= x - 1 and pre != LEFT and constdata[y][x -1]) {
-        output.aroundSeaLength -= 1;
-        if (data[y][x - 1]) {
-            ClaclIslandData(output, data, constdata, x - 1, y, RIGHT);
+        else {
+            for (auto& j : i) {
+                if (j == '.') {
+                    count++;
+                    if (count == k) {
+                        j = 'G';
+                        return;
+                    }
+                }
+            }
         }
     }
 }
 
-int main(void) {
-    int h = 0;
-    int w = 0;
+int main(int argc, char* argv[]) {
+    int k = 0;
 
-    std::cin >> h >> w;
-    std::vector<std::vector<bool>> data;
-    data.resize(h);
-    for (auto& i : data) {
-        i.resize(w);
+    std::cin >> k;
+
+    const int kMaxMapSize = 50;
+
+    std::vector<std::string> mapdata(kMaxMapSize);
+    mapdata.front() = "S";
+    for (int i = 0; i < kMaxMapSize - 1; i++) {
+        mapdata.front() += ".";
     }
+    for (int i = 1; i < kMaxMapSize; i++) {
+        // 1, 5, 9, 13...çsñ⁄
+        if ((i - 1) % 4 == 0) {
+            for (int j = 0; j < kMaxMapSize - 1; j++) {
+                mapdata[i] += "#";
+            }
 
-    std::vector<IslandData> islanddata;
-
-    // ì¸óÕÇéÛÇØéÊÇÈ
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-            char input;
-            std::cin >> input;
-            if (input == '#') {
-                data[i][j] = true;
+            mapdata[i] += ".";
+        }
+        // 3, 7, 11, 15...çsñ⁄
+        else if ((i + 1) % 4 == 0) {
+            mapdata[i] += ".";
+            for (int j = 1; j < kMaxMapSize; j++) {
+                mapdata[i] += "#";
+            }
+        }
+        else {
+            for (int j = 0; j < kMaxMapSize; j++) {
+                mapdata[i] += ".";
             }
         }
     }
 
-    auto constData = data;
 
-    // ì¸óÕÇ©ÇÁìáÇçÏÇÈ
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-            if (data[i][j]) {
-                islanddata.emplace_back(IslandData());
-                ClaclIslandData(islanddata.back(), data, constData, j,i,NONE);
-            }
-        }
+    CalcGoal(mapdata, k);
+
+    std::cout << kMaxMapSize << " " << kMaxMapSize << std::endl;
+
+    for (auto& i : mapdata) {
+        std::cout << i << std::endl;
     }
-
-    std::sort(islanddata.begin(), islanddata.end(), [](const IslandData& a, const IslandData& b) {
-        return a.area != b.area ? a.area > b.area : a.aroundSeaLength > b.aroundSeaLength;
-        });
-
-
-    for (auto& i : islanddata) {
-        std::cout << i.area << " " << i.aroundSeaLength << std::endl;
-    }
-
 
     return 0;
 }
